@@ -11,7 +11,7 @@ model = load_model("quantum_neural_network_model.h5")
 st.title("Optimal Character Recognition")
 st.markdown("Upload an image of the character")
 
-uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+uploaded_file = st.file_uploader("Choose an image...", type="png")
 submit = st.button('Recognize')
 
 #On recognize button click
