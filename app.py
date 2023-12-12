@@ -3,6 +3,10 @@ import numpy as np
 import streamlit as st
 import cv2
 from keras.models import load_model
+import joblib
+
+# Load the label_encoder
+label_encoder = joblib.load('label_encoder.joblib')
 
 # Load the trained Quantum Neural Network (QNN) model
 model = load_model("quantum_neural_network_model.h5")
