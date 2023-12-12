@@ -3,3 +3,4 @@ numpy==1.22.4
 streamlit==1.25.0
 opencv_python-headless==4.8.0.76
 tensorflow==2.13.0
+joblib
