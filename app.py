@@ -1,32 +1,36 @@
 # Import necessary libraries
-import streamlit as st
 import numpy as np
-from tensorflow.keras.models import load_model
+import streamlit as st
 import cv2
+from keras.models import load_model
 
 # Load the trained Quantum Neural Network (QNN) model
-loaded_model = load_model("quantum_neural_network_model.h5")
-
-# Function to preprocess an image for prediction
-def preprocess_image(img):
-    img = cv2.resize(img, (64, 64))
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
-    img = img / 255.0  # Normalize pixel values
-    img = np.reshape(img, (1, 64, 64, 1))  # Reshape for model input
-    return img
+model = load_model("quantum_neural_network_model.h5")
 
 # Streamlit app
-st.title("Optimal Character Recognition Streamlit App")
+st.title("Optimal Character Recognition")
+st.markdown("Upload an image of the character")
 
 uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+submit = st.button('Recognize')
 
-if uploaded_file is not None:
-    # Preprocess the image
-    image = cv2.imdecode(np.fromstring(uploaded_file.read(), np.uint8), cv2.IMREAD_UNCHANGED)
-    processed_image = preprocess_image(image)
-    
-    # Make predictions using the loaded model
-    prediction = loaded_model.predict(processed_image)
+#On recognize button click
+if submit:
+    if uploaded_file is not None:
+        # Convert the file to an opencv image.
+        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        image = cv2.imdecode(file_bytes, 1)
+        #Resize
+        image = cv2.resize(image, (64, 64))
+        # Convert to grayscale
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 
+        # Normalize pixel values
+        image = image / 255.0  
+        #Convert image to 4 Dimension
+        image = np.reshape(image, (1, 64, 64, 1))
+        
+        # Make predictions using the loaded model
+        prediction = model.predict(image)
 
     # Display the prediction
     st.write("Prediction:", label_encoder.classes_[np.argmax(prediction)])
